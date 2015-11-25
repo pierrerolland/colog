@@ -57,6 +57,19 @@ char *str_replace(char *orig, char *rep, char *with)
   return result;
 }
 
+int in_array(const char* str, char** array, int length)
+{
+  int i;
+
+  for (i = 0 ; i < length ; i++) {
+    if (!strcmp(str, array[i])) {
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
 char* colorize(const char* pattern, char* source, const char* color)
 {
   int err;
@@ -67,10 +80,15 @@ char* colorize(const char* pattern, char* source, const char* color)
   char* extract = NULL;
   int start;
   int end;
-  size_t size = end - start;
+  size_t size;
   char* replaced;
   char* concated;
+  int i;
+  char** extractedList = malloc(1);
+  int nbExtracted = 0;
+  char* sourceOrig = malloc((strlen(source) + 1) * sizeof(char));
       
+  strcpy(sourceOrig, source);
   err = regcomp (&preg, pattern, REG_EXTENDED);
   if (err == 0)
     {
@@ -82,26 +100,36 @@ char* colorize(const char* pattern, char* source, const char* color)
 	  regfree (&preg);
 	  if (match == 0)
 	    {
-              start = pmatch[0].rm_so;
-	      end = pmatch[0].rm_eo;
-	      size = end - start;
-	      extract = malloc (sizeof (*extract) * (size + 1));
-	      if (extract)
-		{
-                  strncpy (extract, &source[start], size);
-		  extract[size] = '\0';
-		  concated = malloc(sizeof(*replaced) * strlen(source) + 15);
-		  sprintf(concated, "%s%s%s", color, extract, RESET);
-		  replaced = str_replace(source, extract, concated);
-		  free(concated); 
-		  free(extract);
-		  free(source);
+        for (i = 0; i < preg.re_nsub; i++) {
+          start = pmatch[i].rm_so;
+          end = pmatch[i].rm_eo;
+          size = end - start;
+          extract = malloc (sizeof (*extract) * (size + 1));
+          if (extract)
+            {
+              strncpy(extract, &sourceOrig[start], size);
+              extract[size] = '\0';
+              if (!in_array(extract, extractedList, nbExtracted)) {
+                concated = malloc(sizeof(*replaced) * strlen(source) + 15);
+                sprintf(concated, "%s%s%s", color, extract, RESET);
+                replaced = str_replace(source, extract, concated);
+                extractedList = realloc(extractedList, sizeof(char*));
+                extractedList[nbExtracted] = malloc((strlen(extract) + 1) * sizeof(char));
+                strcpy(extractedList[nbExtracted], extract);
+                nbExtracted++;
+                free(concated); 
+                free(extract);
+                free(source);
 
-		  return replaced;
-                }
+                source = replaced;
+              }
+            }
+        }
+
             }
          }
     }
+  free(sourceOrig);
 
   return source;
 }
@@ -115,8 +143,11 @@ int main(int argc, char **argv)
       buffer = colorize("(\\[[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2} [[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}\\])", buffer, KGRN);
       buffer = colorize("([[:lower:]]+\\.INFO)", buffer, KBLU);
       buffer = colorize("([[:lower:]]+\\.DEBUG)", buffer, KCYN);
-      buffer = colorize("(([[:lower:]]+\\.CRITICAL)|([[:lower:]]+\\.ERROR))", buffer, KRED);
+      buffer = colorize("([[:lower:]]+\\.ERROR)", buffer, KRED);
+      buffer = colorize("([[:lower:]]+\\.CRITICAL)", buffer, KRED);
       buffer = colorize("([[:lower:]]+\\.WARNING)", buffer, KYEL);
+      
+      buffer = colorize("(\\\"[^\"]+\\\")", buffer, KMAG);
                   
       printf("%s", buffer);
       free(buffer);
