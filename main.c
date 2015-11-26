@@ -6,7 +6,7 @@
 #include "colors.h"
 
 #define STDIN 0
-#define BUFFERSIZE 255
+#define BUFFERSIZE 1024
 
 char *str_replace(char *orig, char *rep, char *with)
 {
@@ -95,6 +95,7 @@ char* colorize(const char* pattern, char* source, const char* color)
 		  replaced = str_replace(source, extract, concated);
 		  free(concated); 
 		  free(extract);
+		  free(source);
 
 		  return replaced;
                 }
@@ -107,7 +108,7 @@ char* colorize(const char* pattern, char* source, const char* color)
 
 int main(int argc, char **argv)
 {
-  char *buffer = malloc(1024);
+  char *buffer = malloc(BUFFERSIZE);
 
   while(fgets(buffer, BUFFERSIZE , stdin))
     {
@@ -119,7 +120,7 @@ int main(int argc, char **argv)
                   
       printf("%s", buffer);
       free(buffer);
-      buffer = malloc(1024);
+      buffer = malloc(BUFFERSIZE);
     }
   
   return 0;
