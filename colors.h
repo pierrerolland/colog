@@ -1,3 +1,6 @@
+#ifndef __COLOG_COLORS__
+#define __COLOG_COLORS__
+
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -7,3 +10,5 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 #define RESET "\033[0m"
+
+#endif /* __COLOG_COLORS__ */
