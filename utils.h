@@ -31,4 +31,9 @@ int  in_array(const char *str, char **array, int length);
  */
 colog_matches_t match(const char *pattern, const char *source);
 
+/**
+ * Gets the first non-option argument
+ */
+char* get_argument(int argc, char** argv);
+
 #endif /* __COLOG_UTILS__ */

@@ -34,8 +34,16 @@ char* colorize(const char* pattern, char* source, const char* color)
 int main(int argc, char **argv)
 {
   char *buffer = xalloc(BUFFERSIZE);
+  FILE* file;
+  char* filename = get_argument(argc, argv);
 
-  while(fgets(buffer, BUFFERSIZE , stdin)) {
+  if (filename == NULL) {
+    file = stdin;
+  } else {
+    file = fopen(filename, "r");
+  }
+
+  while(fgets(buffer, BUFFERSIZE , file)) {
     buffer = colorize("(\\[[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2} [[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}\\])", buffer, KGRN);
     buffer = colorize("([[:lower:]]+\\.INFO)", buffer, KBLU);
     buffer = colorize("([[:lower:]]+\\.DEBUG)", buffer, KCYN);
@@ -47,6 +55,10 @@ int main(int argc, char **argv)
     write(STDOUT, buffer, strlen(buffer));
     free(buffer);
     buffer = xalloc(BUFFERSIZE);
+  }
+
+  if (filename != NULL) {
+    fclose(file);
   }
 
   return 0;

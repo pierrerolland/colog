@@ -1,4 +1,5 @@
 #include <regex.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "utils.h"
@@ -144,4 +145,23 @@ colog_matches_t match(const char *pattern, const char *source)
   free(analyzed);
 
   return matches;
+}
+
+char* get_argument(int argc, char** argv)
+{
+  int i;
+  int previous_is_option_desc = 0;
+
+  for (i = 1 ; i < argc ; i++) {
+    if (argv[i][0] == '-') {
+      previous_is_option_desc = 1;
+    } else {
+      if (!previous_is_option_desc) {
+        return argv[i];
+      }
+      previous_is_option_desc = 0;
+    }
+  }
+
+  return NULL;
 }

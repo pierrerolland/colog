@@ -8,3 +8,5 @@ C program that provides syntax coloration to Symfony logs
 `cat app/logs/dev.log | colog`
 
 `tail app/logs/dev.log | colog`
+
+`colog app/logs/dev.log`
