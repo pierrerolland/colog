@@ -1,5 +1,33 @@
+#include <regex.h>
 #include <stdlib.h>
 #include <string.h>
+#include "utils.h"
+
+#include <stdio.h>
+
+void* xalloc(size_t size)
+{
+  void* ptr = malloc(size);
+
+  if (ptr == NULL) {
+    printf("Error. No memory.\n");
+    exit(-1);
+  }
+
+  return ptr;
+}
+
+void* xrealloc(void *orig, size_t size)
+{
+  void* ptr = realloc(orig, size);
+
+  if (ptr == NULL) {
+    printf("Error. No memory.\n");
+    exit(-1);
+  }
+
+  return ptr;
+}
 
 char *str_replace(char *orig, char *rep, char *with)
 {
@@ -45,7 +73,7 @@ char *str_replace(char *orig, char *rep, char *with)
   return result;
 }
 
-int in_array(const char* str, char** array, int length)
+int in_array(const char *str, char **array, int length)
 {
   int i;
 
@@ -56,4 +84,66 @@ int in_array(const char* str, char** array, int length)
   }
 
   return 0;
+}
+
+char* execute_regex(const char *pattern, const char *source)
+{
+  regex_t preg;
+  regmatch_t *pmatch = NULL;
+  char *extract = NULL;
+  int status;
+  size_t size;
+
+  if (regcomp(&preg, pattern, REG_EXTENDED) == 0) {
+    pmatch = xalloc(sizeof (*pmatch));
+    if (pmatch) {
+      status = regexec(&preg, source, 2, pmatch, 0);
+      regfree(&preg);
+      if (status == 0) {
+        size = pmatch[0].rm_eo - pmatch[0].rm_so;
+        if (size) {
+          extract = xalloc(sizeof (*extract) * (size + 1));
+          strncpy(extract, &source[pmatch[0].rm_so], size);
+          extract[size] = '\0';
+        }
+      }
+      free(pmatch);
+    }
+  }
+
+  return extract;
+}
+
+colog_matches_t match(const char *pattern, const char *source)
+{
+  colog_matches_t matches;
+  int analyzed_length;
+  char* extract = NULL;
+  char* analyzed = xalloc((strlen(source) + 1) * sizeof(char));
+  char* tmp;
+  int cont = 1;
+
+  matches.list = NULL;
+  matches.length = 0;
+  strcpy(analyzed, source);
+  while (cont) {
+    extract = execute_regex(pattern, analyzed);
+    if (extract) {
+      if (!in_array(extract, matches.list, matches.length)) {
+        matches.list = xrealloc(matches.list, (matches.length + 1) * sizeof(char *));
+        matches.list[matches.length] = xalloc((strlen(extract) + 1) * sizeof(char));
+        strcpy(matches.list[matches.length], extract);
+        matches.length++;
+        tmp = str_replace(analyzed, extract, "");
+        free(analyzed);
+        analyzed = tmp;
+      }
+      free(extract);
+    } else {
+      cont = 0;
+    }
+  }
+  free(analyzed);
+
+  return matches;
 }
