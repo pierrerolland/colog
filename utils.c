@@ -163,7 +163,6 @@ char* get_argument(int argc, char** argv)
 int has_option(char option, int argc, char** argv)
 {
   int i;
-  int previous_is_option_desc = 0;
   char full_option_name[2];
 
   sprintf(full_option_name, "-%c", option);
