@@ -18,7 +18,7 @@ char* colorize(const char* pattern, char* source, const char* color)
   colog_matches_t matches = match(pattern, source);
 
   for (i = 0 ; i < matches.length ; i++) {
-    concated = malloc(sizeof(*replaced) * strlen(source) + 15);
+    concated = xalloc(sizeof(*replaced) * strlen(source) + 15);
     sprintf(concated, "%s%s%s", color, matches.list[i], RESET);
     replaced = str_replace(source, matches.list[i], concated);
     free(concated);
@@ -33,7 +33,7 @@ char* colorize(const char* pattern, char* source, const char* color)
 
 int main(int argc, char **argv)
 {
-  char *buffer = malloc(BUFFERSIZE);
+  char *buffer = xalloc(BUFFERSIZE);
 
   while(fgets(buffer, BUFFERSIZE , stdin)) {
     buffer = colorize("(\\[[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2} [[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}\\])", buffer, KGRN);
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 
     write(STDOUT, buffer, strlen(buffer));
     free(buffer);
-    buffer = malloc(BUFFERSIZE);
+    buffer = xalloc(BUFFERSIZE);
   }
 
   return 0;

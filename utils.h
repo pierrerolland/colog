@@ -7,6 +7,16 @@ typedef struct colog_matches_s {
 } colog_matches_t;
 
 /**
+ * Secure malloc
+ */
+void* xalloc(size_t size);
+
+/**
+ * Secure realloc
+ */
+void* xrealloc(void *orig, size_t size);
+
+/**
  * Replaces all occurences of "rep" with "with" in "orig"
  */
 char *str_replace(char *orig, char *rep, char *with);
