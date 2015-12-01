@@ -36,4 +36,9 @@ colog_matches_t match(const char *pattern, const char *source);
  */
 char* get_argument(int argc, char** argv);
 
+/**
+ * Checks if has option
+ */
+int has_option(char option, int argc, char** argv);
+
 #endif /* __COLOG_UTILS__ */

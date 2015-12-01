@@ -10,3 +10,9 @@ C program that provides syntax coloration to Symfony logs
 `tail app/logs/dev.log | colog`
 
 `colog app/logs/dev.log`
+
+### Waits at the end of the file for new logs
+`colog -w app/logs/dev.log`
+
+### Displays help
+`colog -h`

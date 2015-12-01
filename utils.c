@@ -150,18 +150,28 @@ colog_matches_t match(const char *pattern, const char *source)
 char* get_argument(int argc, char** argv)
 {
   int i;
-  int previous_is_option_desc = 0;
 
   for (i = 1 ; i < argc ; i++) {
-    if (argv[i][0] == '-') {
-      previous_is_option_desc = 1;
-    } else {
-      if (!previous_is_option_desc) {
-        return argv[i];
-      }
-      previous_is_option_desc = 0;
+    if (argv[i][0] != '-') {
+      return argv[i];
     }
   }
 
   return NULL;
+}
+
+int has_option(char option, int argc, char** argv)
+{
+  int i;
+  int previous_is_option_desc = 0;
+  char full_option_name[2];
+
+  sprintf(full_option_name, "-%c", option);
+  for (i = 1 ; i < argc ; i++) {
+    if (!strcmp(argv[i], full_option_name)) {
+      return 1;
+    }
+  }
+
+  return 0;
 }

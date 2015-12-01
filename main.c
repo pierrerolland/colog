@@ -10,7 +10,7 @@
 #define STDOUT 1
 #define BUFFERSIZE 1024
 
-char* colorize(const char* pattern, char* source, const char* color)
+char* replace_with_color(const char* pattern, char* source, const char* color)
 {
   char* replaced;
   char* concated;
@@ -31,10 +31,35 @@ char* colorize(const char* pattern, char* source, const char* color)
   return source;
 }
 
-int main(int argc, char **argv)
+void colorize(FILE* file)
 {
   char *buffer = xalloc(BUFFERSIZE);
+
+  while(fgets(buffer, BUFFERSIZE , file)) {
+    buffer = replace_with_color("(\\[[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2} [[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}\\])", buffer, KGRN);
+    buffer = replace_with_color("([[:lower:]]+\\.INFO)", buffer, KBLU);
+    buffer = replace_with_color("([[:lower:]]+\\.DEBUG)", buffer, KCYN);
+    buffer = replace_with_color("([[:lower:]]+\\.ERROR)", buffer, KRED);
+    buffer = replace_with_color("([[:lower:]]+\\.CRITICAL)", buffer, KRED);
+    buffer = replace_with_color("([[:lower:]]+\\.WARNING)", buffer, KYEL);
+    buffer = replace_with_color("(\\\"[^\"]+\\\")", buffer, KMAG);
+
+    write(STDOUT, buffer, strlen(buffer));
+    free(buffer);
+    buffer = xalloc(BUFFERSIZE);
+  }
+  free(buffer);
+}
+
+int main(int argc, char **argv)
+{
   FILE* file;
+
+  if (has_option('h', argc, argv)) {
+    printf("Usage: colog [-h] [-w] [filename]\n\n-h: Displays this message\n-w: Waits at the end of the file for new entries\nfilename: The name of your file. If not provided, colog will listen to the standard input.\n");
+    exit(0);
+  }
+
   char* filename = get_argument(argc, argv);
 
   if (filename == NULL) {
@@ -43,18 +68,16 @@ int main(int argc, char **argv)
     file = fopen(filename, "r");
   }
 
-  while(fgets(buffer, BUFFERSIZE , file)) {
-    buffer = colorize("(\\[[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2} [[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}\\])", buffer, KGRN);
-    buffer = colorize("([[:lower:]]+\\.INFO)", buffer, KBLU);
-    buffer = colorize("([[:lower:]]+\\.DEBUG)", buffer, KCYN);
-    buffer = colorize("([[:lower:]]+\\.ERROR)", buffer, KRED);
-    buffer = colorize("([[:lower:]]+\\.CRITICAL)", buffer, KRED);
-    buffer = colorize("([[:lower:]]+\\.WARNING)", buffer, KYEL);
-    buffer = colorize("(\\\"[^\"]+\\\")", buffer, KMAG);
-
-    write(STDOUT, buffer, strlen(buffer));
+  if (has_option('w', argc, argv)) {
+    char* buffer = xalloc(BUFFERSIZE);
+    while(fgets(buffer, BUFFERSIZE , file));
     free(buffer);
-    buffer = xalloc(BUFFERSIZE);
+    while (1) {
+      colorize(file);
+      usleep(500);
+    }
+  } else {
+    colorize(file);
   }
 
   if (filename != NULL) {
