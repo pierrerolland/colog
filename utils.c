@@ -3,8 +3,6 @@
 #include <string.h>
 #include "utils.h"
 
-#include <stdio.h>
-
 void* xalloc(size_t size)
 {
   void* ptr = malloc(size);
