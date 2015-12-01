@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     buffer = colorize("([[:lower:]]+\\.ERROR)", buffer, KRED);
     buffer = colorize("([[:lower:]]+\\.CRITICAL)", buffer, KRED);
     buffer = colorize("([[:lower:]]+\\.WARNING)", buffer, KYEL);
-    buffer = colorize("(\\\"[^\\\",]+\\\")", buffer, KMAG);
+    buffer = colorize("(\\\"[^\"]+\\\")", buffer, KMAG);
 
     write(STDOUT, buffer, strlen(buffer));
     free(buffer);
