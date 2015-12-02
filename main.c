@@ -69,9 +69,7 @@ int main(int argc, char **argv)
   }
 
   if (has_option('w', argc, argv)) {
-    char* buffer = xalloc(BUFFERSIZE);
-    while(fgets(buffer, BUFFERSIZE , file));
-    free(buffer);
+    fseek(file, 0, SEEK_END);
     while (1) {
       colorize(file);
       usleep(500);
