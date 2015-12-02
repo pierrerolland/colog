@@ -18,7 +18,7 @@ char* replace_with_color(const char* pattern, char* source, const char* color)
   colog_matches_t matches = match(pattern, source);
 
   for (i = 0 ; i < matches.length ; i++) {
-    concated = xalloc(sizeof(*replaced) * strlen(source) + 15);
+    concated = xalloc(sizeof(*concated) * strlen(source) + 15);
     sprintf(concated, "%s%s%s", color, matches.list[i], RESET);
     replaced = str_replace(source, matches.list[i], concated);
     free(concated);
