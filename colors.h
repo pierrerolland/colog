@@ -9,6 +9,8 @@
 #define KMAG  "\x1B[35m"
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
+#define LGRA  "\e[37m"
+#define DGRA  "\e[90m"
 #define RESET "\033[0m"
 
 #endif /* __COLOG_COLORS__ */

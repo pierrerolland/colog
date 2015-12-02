@@ -42,7 +42,7 @@ void colorize(FILE* file)
     buffer = replace_with_color("([[:lower:]]+\\.ERROR)", buffer, KRED);
     buffer = replace_with_color("([[:lower:]]+\\.CRITICAL)", buffer, KRED);
     buffer = replace_with_color("([[:lower:]]+\\.WARNING)", buffer, KYEL);
-    buffer = replace_with_color("(\\\"[^\"]+\\\")", buffer, KMAG);
+    buffer = replace_with_color("(\\\"[^\"]+\\\")", buffer, LGRA);
 
     write(STDOUT, buffer, strlen(buffer));
     free(buffer);
