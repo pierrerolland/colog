@@ -162,13 +162,15 @@ char* get_argument(int argc, char** argv)
 
 int has_option(char option, int argc, char** argv)
 {
-  int i;
-  char full_option_name[2];
+  int i, j;
 
-  sprintf(full_option_name, "-%c", option);
   for (i = 1 ; i < argc ; i++) {
-    if (!strcmp(argv[i], full_option_name)) {
-      return 1;
+    if (argv[i][0] == '-') {
+      for (j = 1 ; j < strlen(argv[i]) ; j++) {
+        if (argv[i][j] == option) {
+          return 1;
+        }
+      }
     }
   }
 

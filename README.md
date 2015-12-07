@@ -17,8 +17,11 @@ C program that provides syntax coloration to Symfony logs
 
 `colog app/logs/dev.log`
 
-### Waits at the end of the file for new logs
+#### Waits at the end of the file for new logs
 `colog -w app/logs/dev.log`
 
-### Displays help
+#### Colors the whole line instead of keywords
+`colog -l app/logs/dev.log`
+
+#### Displays help
 `colog -h`
