@@ -86,12 +86,16 @@ int main(int argc, char **argv)
 
   char* filename = get_argument(argc, argv);
   FILE* file;
-  int all_line = has_option('l', argc, argv) ? 1 : 0;
+  int all_line = has_option('l', argc, argv);
 
   if (filename == NULL) {
     file = stdin;
   } else {
     file = fopen(filename, "r");
+    if (!file) {
+      printf("Couldn't open file\n");
+      exit(-1);
+    }
   }
 
   if (has_option('w', argc, argv)) {
