@@ -1,11 +1,14 @@
 # colog
-C program that provides syntax coloration to Symfony logs
+**This software provides syntax coloration to Symfony logs.**
+
+_Written in C._
 
 ## Installation
 
 #### Debian-based (Ubuntu, etc)
 
-`sudo dpkg -i colog.deb`
+`sudo dpkg -i colog.deb` 
+_(requires dpkg >= 1.15.6)_
 
 #### Other systems
 `gcc *.c -o colog && sudo mv colog /usr/local/bin/`
