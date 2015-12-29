@@ -7,11 +7,11 @@ _Written in C._
 
 #### Debian-based (Ubuntu, etc)
 
-`sudo dpkg -i colog.deb` 
+`sudo dpkg -i colog.deb`
 _(requires dpkg >= 1.15.6)_
 
 #### Other systems
-`gcc *.c -o colog && sudo mv colog /usr/local/bin/`
+`gcc src/*.c -Iinc -o colog && sudo mv colog /usr/local/bin/`
 
 ## Usage
 `cat app/logs/dev.log | colog`
