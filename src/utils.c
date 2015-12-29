@@ -176,3 +176,81 @@ int has_option(char option, int argc, char** argv)
 
   return 0;
 }
+
+char *trim(char *str, char to_trim)
+{
+  char *end;
+
+  while (*str == to_trim) {
+      str++;
+  }
+
+  if (*str == 0) {
+      return str;
+  }
+  end = str + strlen(str) - 1;
+
+  while (end > str && *end == to_trim) {
+      end--;
+  }
+  *(end+1) = 0;
+
+  return str;
+}
+
+void free_matches(colog_matches_t matches)
+{
+  int i;
+
+  for (i = 0 ; i < matches.length ; i++) {
+    free(matches.list[i]);
+  }
+  free(matches.list);
+}
+
+int strpos(char c, const char* str)
+{
+  int i, opened_quotes = 0;
+
+  for (i = strlen(str) - 1 ; i > 0 ; i--) {
+    if (str[i] == '"') {
+      opened_quotes = (opened_quotes == 1 ? 0 : 1);
+    }
+    if (str[i] == c && opened_quotes == 0) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+colog_explode_t explode(char delimiter, char* str)
+{
+  colog_explode_t exploded;
+  int pos, end;
+
+  exploded.list = NULL;
+  exploded.length = 0;
+  do {
+    pos = strpos(delimiter, str);
+    end = (pos == -1 ? strlen(str) - 2 : pos - 1);
+    exploded.list = xrealloc(exploded.list, (exploded.length + 1) * sizeof(char *));
+    exploded.list[exploded.length] = xalloc((end + 2) * sizeof(char));
+    strncpy(exploded.list[exploded.length], str, end + 1);
+    exploded.list[exploded.length][end + 1] = '\0';
+    exploded.length++;
+    str += end + 2;
+  } while (pos != -1);
+
+  return exploded;
+}
+
+void free_exploded(colog_explode_t exploded)
+{
+  int i;
+
+  for (i = 0 ; i < exploded.length ; i++) {
+    free(exploded.list[i]);
+  }
+  free(exploded.list);
+}

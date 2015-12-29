@@ -6,6 +6,11 @@ typedef struct colog_matches_s {
   char** list;
 } colog_matches_t;
 
+typedef struct colog_explode_s {
+  int    length;
+  char** list;
+} colog_explode_t;
+
 /**
  * Secure malloc
  */
@@ -40,5 +45,30 @@ char* get_argument(int argc, char** argv);
  * Checks if has option
  */
 int has_option(char option, int argc, char** argv);
+
+/**
+ * Trims leading and ending to_trim of a string
+ */
+char *trim(char *str, char to_trim);
+
+/**
+ * Frees the list of matches
+ */
+void free_matches(colog_matches_t matches);
+
+/**
+ * Finds the position of c in str
+ */
+int strpos(char c, const char* str);
+
+/**
+ * Explodes a string into an array of strings, given a delimiter
+ */
+colog_explode_t explode(char delimiter, char* str);
+
+/**
+ * Frees the exploded array
+ */
+void free_exploded(colog_explode_t exploded);
 
 #endif /* __COLOG_UTILS__ */
