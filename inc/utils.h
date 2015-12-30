@@ -47,6 +47,11 @@ char* get_argument(int argc, char** argv);
 int has_option(char option, int argc, char** argv);
 
 /**
+ * Retrieves the option, NULL if not found
+ */
+char* get_option(char option, int argc, char** argv);
+
+/**
  * Trims leading and ending to_trim of a string
  */
 char *trim(char *str, char to_trim);

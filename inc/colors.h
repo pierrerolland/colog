@@ -13,4 +13,6 @@
 #define DGRA  "\e[90m"
 #define RESET "\033[0m"
 
+char* convert_color(char* color);
+
 #endif /* __COLOG_COLORS__ */

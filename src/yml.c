@@ -39,7 +39,7 @@ colog_yaml_tree_t* treat_configuration_line(char* line, colog_yaml_tree_t* paren
     int level = (nb_spaces_at_beginning(line) / 4) + 1;
 
     initialize_yaml_node(node);
-    while (parent->level <= level && parent->parent != NULL) {
+    while (level <= parent->level && parent->parent != NULL) {
         parent = parent->parent;
     }
 
@@ -52,6 +52,20 @@ colog_yaml_tree_t* treat_configuration_line(char* line, colog_yaml_tree_t* paren
     extract_yaml_data_from_line(line, node);
 
     return node;
+}
+
+colog_yaml_tree_t* find_configuration_node(const char* key, colog_yaml_tree_t* tree)
+{
+    int i;
+
+    for (i = 0 ; i < tree->nb_children ; i++) {
+        if (!strcmp(tree->children[i]->key, key)) {
+            return tree->children[i];
+        }
+    }
+
+    printf("[configuration] Couldn't find child %s\n", key);
+    exit(-1);
 }
 
 void extract_yaml_data_from_line(char* line, colog_yaml_tree_t* node)
@@ -103,4 +117,14 @@ void initialize_yaml_node(colog_yaml_tree_t* node)
     node->value = NULL;
     node->parent = NULL;
     node->level = -1;
+}
+
+void dump(colog_yaml_tree_t* tree)
+{
+    int i;
+
+    printf("%d > %s\n", tree->level, tree->key);
+    for (i = 0 ; i < tree->nb_children ; i++) {
+        dump(tree->children[i]);
+    }
 }

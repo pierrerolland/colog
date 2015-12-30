@@ -151,8 +151,8 @@ char* get_argument(int argc, char** argv)
 {
   int i;
 
-  for (i = 1 ; i < argc ; i++) {
-    if (argv[i][0] != '-') {
+  for (i = argc - 1 ; i > 1 ; i--) {
+    if (argv[i][0] != '-' && !(argv[i - 1][0] == '-' && (argv[i - 1][strlen(argv[i - 1]) - 1] == 'c' || argv[i - 1][strlen(argv[i - 1]) - 1] == 't'))) {
       return argv[i];
     }
   }
@@ -177,7 +177,20 @@ int has_option(char option, int argc, char** argv)
   return 0;
 }
 
-char *trim(char *str, char to_trim)
+char* get_option(char option, int argc, char** argv)
+{
+  int i;
+
+  for (i = 1 ; i < argc ; i++) {
+    if (argv[i][0] == '-' && argv[i][strlen(argv[i]) - 1] == option && (i + 1) < argc) {
+      return argv[i + 1];
+    }
+  }
+
+  return NULL;
+}
+
+char* trim(char *str, char to_trim)
 {
   char *end;
 

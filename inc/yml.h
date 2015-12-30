@@ -40,4 +40,11 @@ void initialize_yaml_node(colog_yaml_tree_t* node);
  */
 void extract_yaml_data_from_line(char* line, colog_yaml_tree_t* node);
 
+/**
+ * Retrieves in tree's children the one that has the given key
+ */
+colog_yaml_tree_t* find_configuration_node(const char* key, colog_yaml_tree_t* tree);
+
+void dump(colog_yaml_tree_t* tree);
+
 #endif /* __COLOG_YML__ */
