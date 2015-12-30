@@ -1,0 +1,1 @@
+gcc src/*.c -Iinc -o colog && sudo mv colog /usr/bin/ && sudo mkdir -p /etc/colog && sudo cp conf/colog.yml /etc/colog/

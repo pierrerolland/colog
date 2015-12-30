@@ -45,6 +45,4 @@ void extract_yaml_data_from_line(char* line, colog_yaml_tree_t* node);
  */
 colog_yaml_tree_t* find_configuration_node(const char* key, colog_yaml_tree_t* tree);
 
-void dump(colog_yaml_tree_t* tree);
-
 #endif /* __COLOG_YML__ */

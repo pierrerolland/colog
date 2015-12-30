@@ -1,0 +1,9 @@
+Package: colog
+Version: 1.2
+Section: base
+Priority: optional
+Architecture: all
+Depends: bash
+Maintainer: Pierre Rolland <roll.pierre@gmail.com>
+Description: Colorizes logs
+Homepage: http://github.com/pierrerolland/colog

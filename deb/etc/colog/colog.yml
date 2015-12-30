@@ -1,0 +1,25 @@
+# All definitions must follow these steps :
+#
+# logname:
+#     keywords:
+#         "regex"="color"
+#         ...
+#     regular:
+#         "regex"="color"
+#         ...
+#
+# Use 4 spaces to indent
+# Max 255 characters per line
+# Comment with a # at the very beginning of the line
+# Available colors are : normal, red, green, yellow, blue, magenta, cyan, white, light_gray and dark_gray
+sf:
+    keywords:
+        "([[:lower:]]+\.INFO)":"blue"
+        "([[:lower:]]+\.DEBUG)":"cyan"
+        "([[:lower:]]+\.ERROR)":"red"
+        "([[:lower:]]+\.CRITICAL)":"red"
+        "([[:lower:]]+\.WARNING)":"yellow"
+    regular:
+        "(\[[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2} [[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2}\])":"green"
+        "(\"[^"]+\")":"light_gray"
+        "('[^']+')":"light_gray"

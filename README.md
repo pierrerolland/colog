@@ -11,20 +11,25 @@ _Written in C._
 _(requires dpkg >= 1.15.6)_
 
 #### Other systems
-`gcc src/*.c -Iinc -o colog && sudo mv colog /usr/local/bin/`
+`./install.sh`
 
 ## Usage
-`cat app/logs/dev.log | colog`
 
-`tail app/logs/dev.log | colog`
+The -d option is required, to specify the log definition colog will use. Log definitions are stored in the configuration file (default /etc/colog/colog.yml)
 
-`colog app/logs/dev.log`
+You can override this configuration file by using the -c option
+
+`cat app/logs/dev.log | colog -d sf`
+
+`tail app/logs/dev.log | colog -d sf`
+
+`colog -d sf app/logs/dev.log`
 
 #### Waits at the end of the file for new logs
-`colog -w app/logs/dev.log`
+`colog -d sf -w app/logs/dev.log`
 
 #### Colors the whole line instead of keywords
-`colog -l app/logs/dev.log`
+`colog -d sf -l app/logs/dev.log`
 
 #### Displays help
 `colog -h`
