@@ -2,10 +2,10 @@
 #
 # logname:
 #     keywords:
-#         "regex"="color"
+#         "regex":"color"
 #         ...
 #     regular:
-#         "regex"="color"
+#         "regex":"color"
 #         ...
 #
 # Use 4 spaces to indent
