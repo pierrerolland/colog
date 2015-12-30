@@ -1,5 +1,5 @@
 # colog
-**This software provides syntax coloration to Symfony logs.**
+**This software provides syntax coloration to your log files.**
 
 _Written in C._
 
@@ -33,3 +33,7 @@ You can override this configuration file by using the -c option
 
 #### Displays help
 `colog -h`
+
+## Definitions
+
+The colog.yml file currently contains one definition : Symfony 2+ logs.
