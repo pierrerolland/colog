@@ -1,5 +1,5 @@
 #ifndef __COLOG_YML__
-#define __COLOG_YML
+#define __COLOG_YML__
 
 #include <stdio.h>
 #include <stdlib.h>
