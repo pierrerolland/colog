@@ -152,7 +152,7 @@ char* get_argument(int argc, char** argv)
   int i;
 
   for (i = argc - 1 ; i > 1 ; i--) {
-    if (argv[i][0] != '-' && !(argv[i - 1][0] == '-' && (argv[i - 1][strlen(argv[i - 1]) - 1] == 'c' || argv[i - 1][strlen(argv[i - 1]) - 1] == 't'))) {
+    if (argv[i][0] != '-' && !(argv[i - 1][0] == '-' && (argv[i - 1][strlen(argv[i - 1]) - 1] == 'c' || argv[i - 1][strlen(argv[i - 1]) - 1] == 'd'))) {
       return argv[i];
     }
   }

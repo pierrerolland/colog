@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     exit(0);
   }
 
-  char* log_definition = get_option('t', argc, argv);
+  char* log_definition = get_option('d', argc, argv);
 
   if (log_definition == NULL) {
     printf("You must specify a log definition.\ncolog -h to display help\n");
